@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { connect } from 'react-redux'
-import contactsActions from '../../../redux/Contacts/contacts-actions'
+import contactsOperations from '../../../redux/Contacts/contacts-operations'
 import PropTypes from "prop-types";
 import shortid from 'shortid';
 import './ContactForm.css';
@@ -19,6 +19,10 @@ class ContactForm extends Component {
     nameInputId = shortid.generate();
     numberInputId = shortid.generate();
     findInput = shortid.generate();
+
+    componentDidMount() {
+        this.props.fetchContacts()
+    }
 
     handleChange = e => {
         const { name, value } = e.currentTarget;
@@ -54,8 +58,8 @@ class ContactForm extends Component {
                         type="text"
                         value={this.state.name}
                         name="name"
-                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                        title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+                        // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                        // title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                         required
                         onChange={this.handleChange}
                         id={this.nameInputId}
@@ -68,8 +72,8 @@ class ContactForm extends Component {
                         type="text"
                         value={this.state.number}
                         name="number"
-                        pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
-                        title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
+                        // pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
+                        // title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
                         required
                         onChange={this.handleChange}
                         id={this.numberInputId}
@@ -92,7 +96,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    onSubmit: (name, number) => dispatch(contactsActions.addContacts(name, number))
+    fetchContacts: () => dispatch(contactsOperations.fetchContacts()),
+    onSubmit: (name, number) => dispatch(contactsOperations.addContacts(name, number))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)
