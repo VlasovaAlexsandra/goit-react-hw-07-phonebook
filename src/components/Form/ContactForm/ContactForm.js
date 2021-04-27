@@ -1,14 +1,10 @@
 import { Component } from "react";
 import { connect } from 'react-redux'
 import contactsOperations from '../../../redux/Contacts/contacts-operations'
+import contactsSelectors from '../../../redux/Contacts/contacts-selectors'
 import PropTypes from "prop-types";
 import shortid from 'shortid';
 import './ContactForm.css';
-// import initialContacts from '../../../contacts.json';
-
-// const initialState = {
-//     contacts: initialContacts,
-// }
 
 class ContactForm extends Component {
     state = {
@@ -58,8 +54,8 @@ class ContactForm extends Component {
                         type="text"
                         value={this.state.name}
                         name="name"
-                        // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                        // title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                        title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                         required
                         onChange={this.handleChange}
                         id={this.nameInputId}
@@ -72,8 +68,8 @@ class ContactForm extends Component {
                         type="text"
                         value={this.state.number}
                         name="number"
-                        // pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
-                        // title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
+                        pattern="(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})"
+                        title="Номер телефона должен состоять из 11-12 цифр и может содержать цифры, пробелы, тире, пузатые скобки и может начинаться с +"
                         required
                         onChange={this.handleChange}
                         id={this.numberInputId}
@@ -91,9 +87,10 @@ ContactForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-    return { contacts: state.contacts.items };
-};
+const mapStateToProps = state => ({
+    contacts: contactsSelectors.getAllContacts(state)
+});
+
 
 const mapDispatchToProps = dispatch => ({
     fetchContacts: () => dispatch(contactsOperations.fetchContacts()),
